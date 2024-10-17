@@ -1,0 +1,184 @@
+<div class="container">
+  <!-- Registration Form -->
+  <div class="shadow p-4 mt-5">
+    <h4 class="display-6 text-center py-2">User Registration</h4>
+
+    <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+      <!-- ID -->
+      <div class="mb-3">
+        <label for="id">ID</label>
+        <input id="id" required #id="ngModel" ngModel name="id" type="number" class="form-control" placeholder="Enter user ID">
+        <div *ngIf="id.invalid && id.touched">
+          <small class="text-danger" *ngIf="id.errors?.['required']">ID is required</small>
+        </div>
+      </div>
+
+      <!-- Name -->
+      <div class="mb-3">
+        <label for="name">Name</label>
+        <input id="name" required #name="ngModel" ngModel name="name" type="text" class="form-control" placeholder="Enter user name">
+        <div *ngIf="name.invalid && name.touched">
+          <small class="text-danger" *ngIf="name.errors?.['required']">Name is required</small>
+        </div>
+      </div>
+
+      <!-- Age -->
+      <div class="mb-3">
+        <label for="age">Age</label>
+        <input id="age" required #age="ngModel" ngModel name="age" type="number" class="form-control" placeholder="Enter age">
+        <div *ngIf="age.invalid && age.touched">
+          <small class="text-danger" *ngIf="age.errors?.['required']">Age is required</small>
+        </div>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="mb-3">
+        <label for="dob">Date of Birth (Year)</label>
+        <input id="dob" required #dob="ngModel" ngModel name="dob" type="number" class="form-control" placeholder="Enter year of birth">
+        <div *ngIf="dob.invalid && dob.touched">
+          <small class="text-danger" *ngIf="dob.errors?.['required']">Date of Birth is required</small>
+        </div>
+      </div>
+
+      <!-- Gender -->
+      <div class="mb-3">
+        <label for="gender">Gender</label>
+        <select id="gender" required #gender="ngModel" ngModel name="gender" class="form-control">
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+        <div *ngIf="gender.invalid && gender.touched">
+          <small class="text-danger" *ngIf="gender.errors?.['required']">Gender is required</small>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="mb-3">
+        <label for="education">Education</label>
+        <input id="education" required #education="ngModel" ngModel name="education" type="text" class="form-control" placeholder="Enter education qualification">
+        <div *ngIf="education.invalid && education.touched">
+          <small class="text-danger" *ngIf="education.errors?.['required']">Education is required</small>
+        </div>
+      </div>
+
+      <!-- City -->
+      <div class="mb-3">
+        <label for="city">City</label>
+        <input id="city" required #city="ngModel" ngModel name="city" type="text" class="form-control" placeholder="Enter city">
+        <div *ngIf="city.invalid && city.touched">
+          <small class="text-danger" *ngIf="city.errors?.['required']">City is required</small>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-group text-center">
+        <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Register</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- User List Table -->
+  <div class="mt-5">
+    <h4 class="display-6 text-center py-2">User List</h4>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Date of Birth</th>
+          <th>Gender</th>
+          <th>Education</th>
+          <th>City</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userDetails">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.age }}</td>
+          <td>{{ user.dob }}</td>
+          <td>{{ user.gender }}</td>
+          <td>{{ user.education }}</td>
+          <td>{{ user.city }}</td>
+          <td>
+            <button class="btn btn-warning" (click)="edit(user)" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
+          </td>
+          <td>
+            <button class="btn btn-danger" (click)="deleteUser(user)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #updateForm="ngForm" (ngSubmit)="updateUser()">
+            <!-- ID -->
+            <div class="mb-3">
+              <label for="edit-id">ID</label>
+              <input id="edit-id" [(ngModel)]="userToUpdate.id" name="id" type="number" class="form-control" disabled>
+            </div>
+
+            <!-- Name -->
+            <div class="mb-3">
+              <label for="edit-name">Name</label>
+              <input id="edit-name" [(ngModel)]="userToUpdate.name" name="name" type="text" class="form-control" required>
+            </div>
+
+            <!-- Age -->
+            <div class="mb-3">
+              <label for="edit-age">Age</label>
+              <input id="edit-age" [(ngModel)]="userToUpdate.age" name="age" type="number" class="form-control" required>
+            </div>
+
+            <!-- DOB -->
+            <div class="mb-3">
+              <label for="edit-dob">Date of Birth (Year)</label>
+              <input id="edit-dob" [(ngModel)]="userToUpdate.dob" name="dob" type="number" class="form-control" required>
+            </div>
+
+            <!-- Gender -->
+            <div class="mb-3">
+              <label for="edit-gender">Gender</label>
+              <select id="edit-gender" [(ngModel)]="userToUpdate.gender" name="gender" class="form-control" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <!-- Education -->
+            <div class="mb-3">
+              <label for="edit-education">Education</label>
+              <input id="edit-education" [(ngModel)]="userToUpdate.education" name="education" type="text" class="form-control" required>
+            </div>
+
+            <!-- City -->
+            <div class="mb-3">
+              <label for="edit-city">City</label>
+              <input id="edit-city" [(ngModel)]="userToUpdate.city" name="city" type="text" class="form-control" required>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
